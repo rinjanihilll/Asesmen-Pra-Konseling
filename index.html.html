@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruang Cerita — Asesmen Kesejahteraan QSBS</title>
+<style>
+  :root{
+    /* Palet warna yang lebih hangat dan menenangkan (Earth/Pastel Tones) */
+    --bg: #FDFBF7;
+    --card: #FFFFFF;
+    --ink: #3D3C38;
+    --ink-soft: #7A7871;
+    --line: #EBE7DF;
+    --teal: #2A5C52;
+    --teal-soft: #EBF1EF;
+    --sage: #7A9E8D;
+    --sage-bg: #EDF3F0;
+    --sage-text: #32634E;
+    --amber: #D49A3E;
+    --amber-bg: #FDF3E1;
+    --amber-text: #875F19;
+    --rose: #C26D62;
+    --rose-bg: #FCEDEC;
+    --rose-text: #8A4036;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height:1.65;
+    padding: 40px 16px 80px;
+  }
+  .wrap{ max-width: 760px; margin: 0 auto; }
+  header.top{ text-align: center; margin-bottom: 30px; }
+  h1{
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: normal;
+    font-size: 28px;
+    color: var(--teal);
+    margin: 0 0 8px;
+  }
+  .sub{ color: var(--ink-soft); font-size: 14.5px; margin: 0; }
+  
+  .welcome-banner {
+    background: var(--teal-soft);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    text-align: center;
+    border: 1px solid #D9E4E1;
+  }
+  .quote {
+    font-style: italic;
+    color: var(--teal);
+    font-size: 15px;
+    margin-bottom: 8px;
+    font-family: Georgia, serif;
+  }
+  .quote-author {
+    font-size: 12px;
+    color: var(--sage-text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .tabs{ display:flex; gap:10px; margin-bottom:28px; }
+  .tab-btn{
+    flex:1;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:12px;
+    font-size:14px;
+    font-weight: 500;
+    cursor:pointer;
+    color: var(--ink-soft);
+    transition: all 0.2s ease;
+  }
+  .tab-btn:hover { background: var(--bg); }
+  .tab-btn.active{ background: var(--teal); color:#fff; border-color: var(--teal); box-shadow: 0 4px 12px rgba(42,92,82,0.15); }
+  
+  .idbox{
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  }
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field label{ font-size: 12.5px; font-weight: 500; color: var(--ink); }
+  .field input{
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:14px;
+    font-family:inherit;
+    background:#faf9f7;
+    transition: border-color 0.2s ease;
+  }
+  .field input:focus { outline: none; border-color: var(--teal); background: #fff; }
+  
+  .domain{ margin-bottom: 35px; }
+  .domain.risk{
+    border: 1px solid var(--rose);
+    border-radius: 14px;
+    padding: 20px 20px 8px;
+    background: #FFFCFB;
+    box-shadow: 0 4px 12px rgba(194, 109, 98, 0.08);
+  }
+  .domain-title{
+    font-family: Georgia, serif;
+    font-size: 19px;
+    color: var(--teal);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 10px;
+    margin-bottom: 18px;
+  }
+  .domain.risk .domain-title{ color: var(--rose-text); border-bottom-color: var(--rose-bg); }
+  .risk-note{ font-size:13.5px; color: var(--rose-text); margin: -10px 0 18px; line-height: 1.5; }
+  
+  .item{
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  }
+  .item p{ margin: 0 0 14px; font-size: 14.5px; color: var(--ink); }
+  .scale{ display:flex; gap: 10px; flex-wrap: wrap; }
+  .scale label{
+    flex: 1 1 auto;
+    min-width: 85px;
+    text-align:center;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 9px 6px;
+    cursor: pointer;
+    color: var(--ink-soft);
+    background: #fff;
+    user-select:none;
+    transition: all 0.2s ease;
+  }
+  .scale input{ display:none; }
+  .scale label:hover{ border-color: #d1cdc4; }
+  .scale label.checked{ background: var(--teal); color:#fff; border-color: var(--teal); transform: translateY(-1px); box-shadow: 0 2px 6px rgba(42,92,82,0.2); }
+  .domain.risk .scale label.checked{ background: var(--rose); border-color: var(--rose); box-shadow: 0 2px 6px rgba(194,109,98,0.2); }
+  
+  .actions{ text-align:center; margin: 40px 0; }
+  button.primary{
+    background: var(--teal);
+    color:#fff;
+    border:none;
+    border-radius: 10px;
+    padding: 14px 32px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor:pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+  }
+  button.primary:hover{ background:#1c423a; transform: translateY(-1px); }
+  button.primary:active{ transform: translateY(0); }
+  button.secondary{
+    background:#fff;
+    color: var(--teal);
+    border:1px solid var(--teal);
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor:pointer;
+    margin:4px;
+    transition: all 0.2s ease;
+  }
+  button.secondary:hover{ background: var(--teal-soft); }
+  .hint{ font-size:13px; color: var(--ink-soft); text-align:center; margin-top:10px; }
+
+  #results{ display:none; margin-top: 10px; }
+  .result-card{
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  }
+  
+  .roster-row{ background: var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 20px; margin-bottom:12px; }
+  .roster-top{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+  .roster-name{ font-size:16px; font-weight:600; color: var(--teal); }
+  .roster-meta{ font-size:13px; color: var(--ink-soft); margin-top: 4px; }
+  .roster-detail{ display:none; margin-top:16px; border-top:1px solid var(--line); padding-top:16px; }
+  .empty-note{ color: var(--ink-soft); font-size:14.5px; text-align:center; padding: 24px; font-style: italic; }
+
+  .tag{ display:inline-block; font-size: 12px; padding: 4px 12px; border-radius: 20px; margin-left: 6px; font-weight: 600;}
+  .tag.rendah{ background: var(--sage-bg); color: var(--sage-text); }
+  .tag.sedang{ background: var(--amber-bg); color: var(--amber-text); }
+  .tag.tinggi{ background: var(--rose-bg); color: var(--rose-text); }
+
+  @media print{
+    button, .actions, .tabs, .welcome-banner{ display:none !important; }
+    body{ padding: 0; background: #fff; }
+    .idbox, .item, .domain.risk { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>Ruang Cerita</h1>
+    <p class="sub">Asesmen Kesejahteraan Diri — Bimbingan & Konseling QSBS</p>
+  </header>
+
+  <div class="tabs">
+    <button type="button" class="tab-btn active" id="tabFormBtn" onclick="showTab('form')">Isi Asesmen Baru</button>
+    <button type="button" class="tab-btn" id="tabRekapBtn" onclick="showTab('rekap')">Ruang Konselor (Rekap)</button>
+  </div>
+
+  <div id="viewForm">
+    <div id="inputArea">
+      
+      <div class="welcome-banner">
+        <p class="quote">"Tidak apa-apa jika hari ini terasa berat. Mengakui bahwa kita sedang tidak baik-baik saja adalah langkah pertama untuk kembali merasa lega."</p>
+        <p class="quote-author">Setiap perasaanmu berharga</p>
+      </div>
+
+      <div class="idbox">
+        <div class="field">
+          <label for="nama">Siapa namamu?</label>
+          <input type="text" id="nama" placeholder="Nama lengkap">
+        </div>
+        <div class="field">
+          <label for="kelas">Kelas berapa sekarang?</label>
+          <input type="text" id="kelas" placeholder="Contoh: 10 IPA 2">
+        </div>
+        <div class="field">
+          <label for="tanggal">Tanggal hari ini</label>
+          <input type="date" id="tanggal">
+        </div>
+        <div class="field">
+          <label for="pengisi">Didampingi oleh</label>
+          <input type="text" id="pengisi" placeholder="Nama guru BK / Konselor">
+        </div>
+      </div>
+
+      <p class="sub" style="margin-bottom:24px; text-align:center; font-size: 15px; color: var(--ink);">
+        Bacalah tiap pernyataan dengan perlahan dan pilih jawaban yang paling menggambarkan kondisimu belakangan ini. <strong>Tidak ada jawaban yang salah.</strong> Jawablah sejujurnya, kami di sini untuk mendengarkan.
+      </p>
+
+      <form id="form"></form>
+
+      <div class="actions">
+        <button type="button" class="primary" onclick="hitungHasil()">Kirimkan Ceritaku</button>
+        <p class="hint" id="formMsg" style="color:var(--rose-text); font-weight: 500;"></p>
+      </div>
+    </div>
+
+    <div id="results"></div>
+  </div>
+
+  <div id="viewRekap" style="display:none;">
+    <div id="rekapGate" class="result-card"></div>
+    <div id="rekapContent" style="display:none;">
+      <div class="result-card" style="margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+          <div class="domain-title" style="margin:0; border:none; padding:0;">Rekap Kesejahteraan Siswa</div>
+          <div>
+            <button type="button" class="secondary" onclick="backupData()" title="Unduh file cadangan data">📥 Ekspor</button>
+            <button type="button" class="secondary" onclick="document.getElementById('importFile').click()" title="Gabungkan data dari file lain">📤 Impor</button>
+            <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
+            <button type="button" class="secondary" onclick="toggleGantiPinPanel()">Ganti PIN</button>
+            <button type="button" class="secondary" onclick="kunciRekap()">Kunci Akses</button>
+          </div>
+        </div>
+        <p class="sub" id="rekapStatus" style="margin:12px 0 0;">Memuat data...</p>
+      </div>
+
+      <div id="gantiPinPanel" class="result-card" style="display:none;">
+        <div class="domain-title" style="margin-top:0;">Ganti PIN Akses</div>
+        <div class="field" style="margin-bottom:12px;"><label>PIN saat ini</label><input type="password" id="pinLama" inputmode="numeric"></div>
+        <div class="field" style="margin-bottom:12px;"><label>PIN baru (4-6 digit)</label><input type="password" id="pinBaruGanti" inputmode="numeric"></div>
+        <div class="field" style="margin-bottom:16px;"><label>Ulangi PIN baru</label><input type="password" id="pinBaruGanti2" inputmode="numeric"></div>
+        <p class="hint" id="gantiPinMsg" style="margin-bottom: 12px; text-align: left;"></p>
+        <button type="button" class="primary" onclick="simpanGantiPin()">Simpan PIN Baru</button>
+      </div>
+
+      <div id="rosterList"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const SKALA = ["Tidak pernah","Jarang","Sering","Selalu"];
+
+const DOMAINS = [
+  {
+    key: "penyesuaian",
+    label: "Adaptasi & Lingkungan",
+    items: [
+      "Saya merasa kesulitan menemukan ritme yang pas di lingkungan sekolah/asrama yang baru",
+      "Perasaan rindu rumah (homesick) sering kali datang dan membuat saya sulit beraktivitas",
+      "Mengikuti jadwal dan rutinitas asrama terasa cukup menguras energi saya",
+      "Saya terkadang merasa asing atau belum sepenuhnya nyaman di lingkungan ini",
+      "Saya merasa kewalahan membagi waktu antara belajar, beribadah, dan beristirahat"
+    ]
+  },
+  {
+    key: "emosi",
+    label: "Kondisi Emosi",
+    items: [
+      "Ada rasa cemas atau gelisah yang mengganggu, meskipun saya tidak tahu pasti penyebabnya",
+      "Akhir-akhir ini, saya merasa lebih mudah sedih atau menangis dari biasanya",
+      "Saya merasa perasaan saya lebih sensitif dan mudah terpancing (marah/kesal)",
+      "Saya merasa lelah secara batin, meskipun secara fisik saya tidak melakukan aktivitas berat",
+      "Pikiran saya sering kali penuh hingga membuat saya sulit tidur nyenyak"
+    ]
+  },
+  {
+    key: "sosial",
+    label: "Relasi Sosial",
+    items: [
+      "Saya merasa ada jarak antara saya dan teman-teman di kelas atau asrama",
+      "Saya pernah mengalami atau melihat hal yang membuat tidak nyaman (perundungan) di lingkungan sekolah",
+      "Saat ini, rasanya saya belum memiliki teman yang benar-benar bisa tempat saya bersandar dan bercerita",
+      "Berada di tengah keramaian atau kelompok terkadang membuat saya merasa canggung",
+      "Terkadang saya merasa sepi atau tidak banyak dilibatkan oleh teman-teman di sekitar"
+    ]
+  },
+  {
+    key: "akademik",
+    label: "Kesejahteraan Belajar",
+    items: [
+      "Saya merasa cukup kesulitan untuk mengejar pemahaman materi di kelas",
+      "Target akademik dan hafalan akhir-akhir ini terasa menekan dan membebani pikiran saya",
+      "Saya sering menunda tugas karena merasa tidak punya energi atau motivasi untuk memulainya",
+      "Saya merasa performa atau nilai belajar saya sedang menurun",
+      "Pikiran saya sering terpecah sehingga sulit sekali untuk fokus saat belajar"
+    ]
+  },
+  {
+    key: "keluarga",
+    label: "Keluarga & Rumah",
+    items: [
+      "Ada hal atau dinamika di rumah yang masih menjadi pikiran saya selama di asrama",
+      "Saya merasa komunikasi dengan orang tua/keluarga sedang kurang berjalan dengan baik",
+      "Saya merasa sedang membutuhkan lebih banyak dukungan emosional dari keluarga",
+      "Saya sering merasa khawatir memikirkan kondisi atau keadaan keluarga di rumah"
+    ]
+  }
+];
+
+const RISK_DOMAIN = {
+  key: "risiko",
+  label: "Keselamatan & Keamanan Diri",
+  items: [
+    "Saya pernah memiliki pikiran untuk melukai atau menyakiti diri saya sendiri",
+    "Saya terkadang merasa bahwa semuanya terlalu berat dan berharap saya tidak perlu ada",
+    "Saya pernah berada dalam situasi yang melanggar batasan aman saya (kekerasan fisik, verbal, atau sentuhan yang tidak pantas)",
+    "Saat ini, ada sesuatu atau seseorang yang membuat saya merasa tidak aman"
+  ]
+};
+
+const form = document.getElementById('form');
+
+function renderDomainSection(d, isRisk){
+  const section = document.createElement('div');
+  section.className = 'domain' + (isRisk ? ' risk' : '');
+  const title = document.createElement('div');
+  title.className = 'domain-title';
+  title.textContent = d.label;
+  section.appendChild(title);
+
+  if(isRisk){
+    const note = document.createElement('p');
+    note.className = 'risk-note';
+    note.textContent = 'Bagian ini sangat penting. Jawabanmu di sini akan membantu konselor memastikan kamu berada di tempat yang aman dan terlindungi. Kamu tidak sendirian.';
+    section.appendChild(note);
+  }
+
+  d.items.forEach((text, i) => {
+    const id = d.key + '_' + i;
+    const item = document.createElement('div');
+    item.className = 'item';
+    const p = document.createElement('p');
+    p.textContent = text;
+    item.appendChild(p);
+
+    const scale = document.createElement('div');
+    scale.className = 'scale';
+    SKALA.forEach((s, val) => {
+      const lab = document.createElement('label');
+      lab.textContent = s;
+      const inp = document.createElement('input');
+      inp.type = 'radio';
+      inp.name = id;
+      inp.value = val + 1;
+      inp.addEventListener('change', () => {
+        scale.querySelectorAll('label').forEach(l => l.classList.remove('checked'));
+        lab.classList.add('checked');
+      });
+      lab.prepend(inp);
+      scale.appendChild(lab);
+    });
+    item.appendChild(scale);
+    section.appendChild(item);
+  });
+  form.appendChild(section);
+}
+
+DOMAINS.forEach(d => renderDomainSection(d, false));
+renderDomainSection(RISK_DOMAIN, true);
+
+function levelFor(score, itemCount){
+  const max = itemCount * 4;
+  const pct = score / max;
+  if(pct <= 0.45) return 'rendah';
+  if(pct <= 0.70) return 'sedang';
+  return 'tinggi';
+}
+
+const INTERPRETASI = {
+  penyesuaian: {
+    rendah: 'Kamu terlihat mampu menikmati ritme baru di asrama dengan cukup baik. Terus pertahankan ruang nyamanmu, ya.',
+    sedang: 'Ada beberapa hal yang masih butuh penyesuaian, dan itu sangat wajar. Proses adaptasi memang membutuhkan waktu agar terasa lebih ringan.',
+    tinggi: 'Tampaknya kamu sedang berada di fase adaptasi yang cukup menguras energi. Tidak apa-apa merasa asing di tempat baru, mari kita bicarakan bersama agar asrama bisa terasa lebih seperti rumah.'
+  },
+  emosi: {
+    rendah: 'Kondisi emosimu relatif stabil. Kamu tampaknya memiliki cara yang baik untuk menyalurkan perasaan dan stres harian.',
+    sedang: 'Ada beberapa pikiran dan perasaan yang menumpuk di hatimu. Meluangkan waktu untuk istirahat sejenak atau menulis jurnal mungkin bisa membantu melegakan.',
+    tinggi: 'Kamu sedang memikul beban emosi yang cukup berat akhir-akhir ini. Perasaan sedih, marah, atau lelah yang kamu rasakan sangat valid. Kami di sini siap menjadi ruang aman untukmu bercerita.'
+  },
+  sosial: {
+    rendah: 'Kamu terlihat memiliki relasi yang hangat dan mampu menemukan tempat yang nyaman bersama teman-teman.',
+    sedang: 'Sesekali mungkin ada rasa kurang terhubung dengan lingkungan sekitar. Membuka obrolan kecil dengan teman di asrama bisa jadi langkah awal yang baik.',
+    tinggi: 'Berada di tengah banyak orang namun merasa sendiri tentu sangat tidak nyaman. Kamu sangat berharga, mari kita cari cara perlahan agar kamu bisa menemukan lingkaran pertemanan yang saling mendukung.'
+  },
+  akademik: {
+    rendah: 'Kamu mampu menyeimbangkan kewajiban belajar tanpa tekanan yang berlebihan. Ini adalah ritme yang sehat.',
+    sedang: 'Mulai terasa sedikit kelelahan atau beban pada target akademikmu. Ingatlah untuk bernapas dan tidak terlalu memforsir dirimu.',
+    tinggi: 'Terlihat ada kelelahan belajar yang cukup dalam. Nilai dan hafalan memang penting, tetapi kesehatan mental dan kesejahteraanmu jauh lebih utama. Kita bisa mengatur ulang strateginya bersama.'
+  },
+  keluarga: {
+    rendah: 'Hubungan dan dinamika keluargamu terlihat memberikan ketenangan yang cukup mendukung harimu di asrama.',
+    sedang: 'Ada sedikit kerinduan atau kerisauan terkait rumah. Mengirim pesan hangat atau menelepon orang tua di waktu luang mungkin bisa mengobati rindu.',
+    tinggi: 'Ada dinamika di rumah yang sepertinya cukup membayangi pikiranmu di sini. Kamu tidak harus memikul semua kekhawatiran itu sendirian, ruang konseling selalu terbuka kapan pun kamu butuh bersandar.'
+  }
+};
+
+function hitungHasil(){
+  let semuaTerisi = true;
+  const skor = {};
+
+  DOMAINS.forEach(d => {
+    let total = 0;
+    d.items.forEach((text, i) => {
+      const checked = form.querySelector('input[name="'+d.key+'_'+i+'"]:checked');
+      if(!checked){ semuaTerisi = false; return; }
+      total += parseInt(checked.value, 10);
+    });
+    skor[d.key] = total;
+  });
+
+  let riskFlag = false;
+  RISK_DOMAIN.items.forEach((text, i) => {
+    const checked = form.querySelector('input[name="'+RISK_DOMAIN.key+'_'+i+'"]:checked');
+    if(!checked){ semuaTerisi = false; return; }
+    if(parseInt(checked.value, 10) >= 2) riskFlag = true;
+  });
+
+  if(!semuaTerisi){
+    const msg = document.getElementById('formMsg');
+    if(msg) msg.textContent = 'Halo, sepertinya masih ada cerita yang terlewat. Mohon lengkapi semua pilihan ya.';
+    document.getElementById('formMsg').scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  const formMsg = document.getElementById('formMsg');
+  if(formMsg) formMsg.textContent = '';
+
+  const levels = {};
+  DOMAINS.forEach(d => levels[d.key] = levelFor(skor[d.key], d.items.length));
+
+  const jumlahTinggi = Object.values(levels).filter(l => l === 'tinggi').length;
+  
+  let prioritas;
+  if(riskFlag){
+    prioritas = 'Pendampingan Segera';
+  } else if(jumlahTinggi > 0) {
+    prioritas = 'Perhatian Ekstra';
+  } else {
+    prioritas = 'Berkala';
+  }
+
+  const nama = document.getElementById('nama').value || '(Nama belum diisi)';
+  const kelas = document.getElementById('kelas').value || '-';
+  const tanggal = document.getElementById('tanggal').value || '-';
+  const pengisi = document.getElementById('pengisi').value || '-';
+
+  const results = document.getElementById('results');
+  document.getElementById('inputArea').style.display = 'none'; 
+  
+  results.style.display = 'block';
+  results.innerHTML =
+    '<div class="result-card" style="text-align:center; padding: 50px 20px; margin-top: 20px;">'
+    + '<div class="domain-title" style="margin-top:0; border:none; padding-bottom:0; color: var(--teal); font-size: 26px;">Terima Kasih Atas Kejujuranmu</div>'
+    + '<p class="sub" style="margin:16px 0 0; font-size: 15.5px; color: var(--ink);">Langkah pertamamu hari ini sangat berarti. Ceritamu sudah kami simpan dengan aman.</p>'
+    + '<p class="sub" style="margin:8px 0 30px; font-size: 14px;">Data ini bersifat rahasia dan hanya akan menjadi bahan evaluasi suportif bersama guru BK.</p>'
+    + '<button type="button" class="primary" onclick="formBaru()">Kembali ke Halaman Awal</button>'
+    + '</div>';
+
+  results.scrollIntoView({behavior:'smooth'});
+
+  // --- KODE PENGIRIM KE GOOGLE SHEETS ---
+  const scriptURL = 'TEMPEL_URL_WEB_APP_DI_SINI'; // Ganti dengan URL dari langkah 9
+  
+  const submitData = {
+    nama, kelas, tanggal, pengisi,
+    skor, riskFlag, prioritas
+  };
+
+  fetch(scriptURL, {
+    method: 'POST',
+    mode: 'no-cors', // Penting agar browser HP tidak memblokir pengiriman
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(submitData)
+  }).catch(error => console.error('Gagal mengirim ke Sheets:', error));
+  // ----------------------------------------
+
+  simpanEntri({
+    id: 'e' + Date.now(),
+    nama, kelas, tanggal, pengisi,
+    skor, levels, riskFlag,
+    prioritas
+  });
+}
+
+function formBaru(){
+  form.reset();
+  form.querySelectorAll('.scale label').forEach(l => l.classList.remove('checked'));
+  document.getElementById('nama').value = '';
+  document.getElementById('kelas').value = '';
+  document.getElementById('pengisi').value = '';
+  document.getElementById('tanggal').valueAsDate = new Date();
+  
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('inputArea').style.display = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function simpanEntri(entry){
+  try{
+    const existing = localStorage.getItem('siswa-data');
+    const arr = existing ? JSON.parse(existing) : [];
+    arr.push(entry);
+    localStorage.setItem('siswa-data', JSON.stringify(arr));
+  } catch(err){}
+}
+
+function backupData() {
+  const data = localStorage.getItem('siswa-data') || '[]';
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'backup_data_kesejahteraan_' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const importedArr = JSON.parse(e.target.result);
+      if (!Array.isArray(importedArr)) throw new Error('Format salah');
+      
+      const existing = localStorage.getItem('siswa-data');
+      let currentArr = existing ? JSON.parse(existing) : [];
+      
+      const existingIds = new Set(currentArr.map(item => item.id));
+      let addedCount = 0;
+      
+      importedArr.forEach(item => {
+        if (!existingIds.has(item.id)) {
+          currentArr.push(item);
+          addedCount++;
+        }
+      });
+      
+      localStorage.setItem('siswa-data', JSON.stringify(currentArr));
+      alert('Berhasil mengimpor ' + addedCount + ' data siswa baru!');
+      muatRekap();
+    } catch (err) {
+      alert('Gagal mengimpor file. Pastikan file tersebut adalah file backup (.json) yang valid.');
+    }
+    event.target.value = ''; 
+  };
+  reader.readAsText(file);
+}
+
+let rekapUnlocked = false;
+
+function showTab(which){
+  document.getElementById('viewForm').style.display = which === 'form' ? 'block' : 'none';
+  document.getElementById('viewRekap').style.display = which === 'rekap' ? 'block' : 'none';
+  document.getElementById('tabFormBtn').classList.toggle('active', which === 'form');
+  document.getElementById('tabRekapBtn').classList.toggle('active', which === 'rekap');
+
+  if(which === 'rekap'){
+    if(rekapUnlocked){
+      document.getElementById('rekapGate').style.display = 'none';
+      document.getElementById('rekapContent').style.display = 'block';
+      muatRekap();
+    } else {
+      document.getElementById('rekapContent').style.display = 'none';
+      document.getElementById('rekapGate').style.display = 'block';
+      renderGate();
+    }
+  }
+}
+
+function kunciRekap(){
+  rekapUnlocked = false;
+  document.getElementById('gantiPinPanel').style.display = 'none';
+  showTab('form');
+}
+
+function getStoredPin(){
+  try{ return localStorage.getItem('rekap-pin'); } catch(err){ return null; }
+}
+
+function renderGate(){
+  const gate = document.getElementById('rekapGate');
+  gate.innerHTML = '<p class="hint">Memeriksa kunci akses...</p>';
+  const storedPin = getStoredPin();
+
+  if(!storedPin){
+    gate.innerHTML =
+      '<div class="domain-title" style="margin-top:0;">Buat PIN Akses Ruang Konselor</div>'
+      + '<p class="sub" style="margin-bottom:18px;">Sebagai pelindung kerahasiaan siswa, silakan buat PIN keamanan. PIN ini hanya dibuat satu kali.</p>'
+      + '<div class="field" style="margin-bottom:12px;"><label for="pinBaru1">PIN baru (4-6 digit)</label><input type="password" id="pinBaru1" inputmode="numeric"></div>'
+      + '<div class="field" style="margin-bottom:16px;"><label for="pinBaru2">Konfirmasi PIN</label><input type="password" id="pinBaru2" inputmode="numeric"></div>'
+      + '<p class="hint" id="gateMsg" style="color:var(--rose-text); text-align: left;"></p>'
+      + '<button type="button" class="primary" onclick="buatPin()">Simpan & Buka Ruang</button>';
+  } else {
+    gate.innerHTML =
+      '<div class="domain-title" style="margin-top:0;">Autentikasi Ruang Konselor</div>'
+      + '<p class="sub" style="margin-bottom:18px;">Masukkan PIN untuk mengakses rekap kesejahteraan siswa.</p>'
+      + '<div class="field" style="margin-bottom:16px;"><label for="pinMasuk">PIN Akses</label><input type="password" id="pinMasuk" inputmode="numeric"></div>'
+      + '<p class="hint" id="gateMsg" style="color:var(--rose-text); text-align: left; margin-bottom: 12px;"></p>'
+      + '<button type="button" class="primary" onclick="cekPin()">Buka Akses</button>';
+    const pinInput = document.getElementById('pinMasuk');
+    pinInput.addEventListener('keydown', e => { if(e.key === 'Enter') cekPin(); });
+    setTimeout(() => pinInput.focus(), 50);
+  }
+}
+
+function buatPin(){
+  const p1 = document.getElementById('pinBaru1').value.trim();
+  const p2 = document.getElementById('pinBaru2').value.trim();
+  const msg = document.getElementById('gateMsg');
+  if(p1.length < 4){ msg.textContent = 'Keamanan belum cukup: PIN minimal 4 angka.'; return; }
+  if(p1 !== p2){ msg.textContent = 'Konfirmasi gagal: Angka tidak sama, mohon periksa kembali.'; return; }
+  try{ localStorage.setItem('rekap-pin', p1); } catch(err){ msg.textContent = 'Sistem gagal menyimpan. Coba ulangi.'; return; }
+  rekapUnlocked = true;
+  document.getElementById('rekapGate').style.display = 'none';
+  document.getElementById('rekapContent').style.display = 'block';
+  muatRekap();
+}
+
+function cekPin(){
+  const entered = document.getElementById('pinMasuk').value.trim();
+  const msg = document.getElementById('gateMsg');
+  if(entered && entered === getStoredPin()){
+    rekapUnlocked = true;
+    document.getElementById('rekapGate').style.display = 'none';
+    document.getElementById('rekapContent').style.display = 'block';
+    muatRekap();
+  } else { msg.textContent = 'PIN yang Anda masukkan kurang tepat.'; }
+}
+
+function toggleGantiPinPanel(){
+  const el = document.getElementById('gantiPinPanel');
+  el.style.display = el.style.display === 'block' ? 'none' : 'block';
+}
+
+function simpanGantiPin(){
+  const msg = document.getElementById('gantiPinMsg');
+  const lama = document.getElementById('pinLama').value.trim();
+  const baru = document.getElementById('pinBaruGanti').value.trim();
+  const baru2 = document.getElementById('pinBaruGanti2').value.trim();
+  
+  msg.style.color = 'var(--rose-text)';
+  if(lama !== getStoredPin()){ msg.textContent = 'PIN lama salah.'; return; }
+  if(baru.length < 4){ msg.textContent = 'PIN baru minimal 4 angka.'; return; }
+  if(baru !== baru2){ msg.textContent = 'Konfirmasi PIN baru tidak cocok.'; return; }
+
+  try{
+    localStorage.setItem('rekap-pin', baru);
+    msg.style.color = 'var(--sage-text)';
+    msg.textContent = 'Pembaruan PIN berhasil.';
+    document.getElementById('pinLama').value = '';
+    document.getElementById('pinBaruGanti').value = '';
+    document.getElementById('pinBaruGanti2').value = '';
+  } catch(err){ msg.textContent = 'Gagal menyimpan pembaruan.'; }
+}
+
+function muatRekap(){
+  const status = document.getElementById('rekapStatus');
+  const list = document.getElementById('rosterList');
+  status.textContent = 'Memuat arsip siswa...';
+  list.innerHTML = '';
+  let arr = [];
+  try{
+    const existing = localStorage.getItem('siswa-data');
+    arr = existing ? JSON.parse(existing) : [];
+  } catch(err){
+    status.textContent = 'Gagal memuat sistem berkas.'; return;
+  }
+
+  if(arr.length === 0){
+    status.textContent = 'Ruang rekap masih kosong.';
+    list.innerHTML = '<div class="empty-note">Belum ada asesmen yang masuk. Riwayat siswa akan tersusun rapi di sini.</div>';
+    return;
+  }
+
+  arr.sort((a,b) => (b.id || '').localeCompare(a.id || ''));
+  status.textContent = arr.length + ' rekap kesejahteraan tersimpan.';
+
+  arr.forEach(entry => {
+    const row = document.createElement('div');
+    row.className = 'roster-row';
+    const detailId = 'detail-' + entry.id;
+    const reportId = 'report-' + entry.id;
+    const badgeClass = entry.riskFlag ? 'tinggi' : (entry.prioritas === 'Berkala' ? 'rendah' : 'sedang');
+    
+    let reportHtml = `
+      <div id="${reportId}" style="font-family: 'Segoe UI', Helvetica, sans-serif; color: #3D3C38; background: #FDFBF7; padding: 30px; border-radius: 12px; border: 1px solid #EBE7DF;">
+        
+        <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #2A5C52; padding-bottom: 18px;">
+          <h2 style="color: #2A5C52; margin: 0 0 6px 0; font-family: Georgia, serif; font-weight: normal; font-size: 24px;">Profil Kesejahteraan Siswa</h2>
+          <p style="margin: 0; color: #7A7871; font-size: 14.5px;">Bimbingan & Konseling — QSBS</p>
+        </div>
+
+        <table style="width: 100%; margin-bottom: 30px; font-size: 14.5px; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 6px 0; width: 50%; border-bottom: 1px solid #EBE7DF;"><strong>Nama:</strong> ${escapeHtml(entry.nama)}</td>
+            <td style="padding: 6px 0; text-align: right; width: 50%; border-bottom: 1px solid #EBE7DF;"><strong>Kelas:</strong> ${escapeHtml(entry.kelas)}</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 0;"><strong>Tanggal Konsultasi:</strong> ${escapeHtml(entry.tanggal)}</td>
+            <td style="padding: 6px 0; text-align: right;"><strong>Konselor:</strong> ${escapeHtml(entry.pengisi)}</td>
+          </tr>
+        </table>
+
+        <h3 style="color: #2A5C52; font-size: 17px; margin-bottom: 18px; font-family: Georgia, serif;">Pemetaan Dinamika Kesejahteraan</h3>
+    `;
+
+    DOMAINS.forEach(d => {
+      const score = entry.skor[d.key];
+      const maxScore = d.items.length * 4;
+      const pct = Math.round((score / maxScore) * 100);
+      const level = entry.levels[d.key];
+      
+      let barColor = '#7A9E8D';
+      let labelTeks = 'Ringan';
+      if(level === 'sedang') { barColor = '#D49A3E'; labelTeks = 'Perlu Perhatian'; }
+      if(level === 'tinggi') { barColor = '#C26D62'; labelTeks = 'Tantangan Tinggi'; }
+
+      reportHtml += `
+        <div style="margin-bottom: 20px; background: #FFFFFF; padding: 18px; border-radius: 10px; border: 1px solid #EBE7DF;">
+          <div style="display: flex; justify-content: space-between; font-size: 14.5px; font-weight: 600; margin-bottom: 10px;">
+            <span style="color: #3D3C38;">${d.label}</span>
+            <span style="color: ${barColor}">${labelTeks} (${score}/${maxScore})</span>
+          </div>
+          <div style="width: 100%; background-color: #F5F5F5; border-radius: 20px; height: 12px; margin-bottom: 12px; overflow: hidden;">
+            <div style="width: ${pct}%; background-color: ${barColor}; height: 100%; border-radius: 20px; transition: width 0.5s ease;"></div>
+          </div>
+          <div style="font-size: 13.5px; color: #5C5B56; line-height: 1.6;">${INTERPRETASI[d.key][level]}</div>
+        </div>
+      `;
+    });
+
+    reportHtml += `
+        <h3 style="color: #2A5C52; font-size: 17px; margin-top: 30px; margin-bottom: 16px; font-family: Georgia, serif;">Catatan Keselamatan Diri</h3>
+        <div style="padding: 18px; border-radius: 10px; background-color: ${entry.riskFlag ? '#FCEDEC' : '#EDF3F0'}; color: ${entry.riskFlag ? '#8A4036' : '#32634E'}; font-size: 14.5px; border: 1px solid ${entry.riskFlag ? '#E8C7C3' : '#C7DDD4'};">
+          <strong style="display:block; margin-bottom: 6px; font-size: 15px;">Status: ${entry.riskFlag ? 'Membutuhkan Pendampingan Segera' : 'Area Aman Terjaga'}</strong>
+          <span style="font-size: 14px; line-height: 1.6;">${entry.riskFlag ? 'Berdasarkan respons yang diberikan, siswa mengindikasikan kerentanan yang memerlukan dukungan emosional mendalam dan kepastian keamanan fisik/psikologis. Prioritaskan penjadwalan sesi tatap muka sesegera mungkin.' : 'Pada asesmen ini, tidak ditemukan indikasi risiko krisis pada keselamatan diri. Siswa berada pada batas aman secara emosional dan fisik.'}</span>
+        </div>
+      </div>
+    `;
+
+    row.innerHTML =
+      '<div class="roster-top">'
+      + '<div><div class="roster-name">'+escapeHtml(entry.nama)+'</div>'
+      + '<div class="roster-meta">'+escapeHtml(entry.kelas)+' &middot; Direkam: '+escapeHtml(entry.tanggal)+'</div></div>'
+      + '<div>'
+      + '<span class="tag '+badgeClass+'">'+escapeHtml(entry.prioritas)+'</span> '
+      + '<button type="button" class="secondary" onclick="toggleDetail(\''+detailId+'\')">Buka Rapor</button> '
+      + '<button type="button" class="secondary" onclick="unduhWord(\''+reportId+'\', \''+escapeHtml(entry.nama)+'\')">Unduh Doc</button> '
+      + '<button type="button" class="secondary" style="color:var(--rose-text); border-color:var(--rose-bg); background:var(--rose-bg);" onclick="konfirmasiHapus(this, \''+entry.id+'\')">Hapus</button>'
+      + '</div></div>'
+      + '<div class="roster-detail" id="'+detailId+'">'
+      + reportHtml
+      + '</div>';
+    list.appendChild(row);
+  });
+}
+
+function unduhWord(elementId, namaSiswa) {
+  const content = document.getElementById(elementId).innerHTML;
+  const preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Profil Kesejahteraan Siswa</title></head><body>";
+  const postHtml = "</body></html>";
+  const html = preHtml + content + postHtml;
+  
+  const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  
+  link.href = url;
+  link.download = 'Rapor_Kesejahteraan_' + namaSiswa.replace(/\s+/g, '_') + '.doc';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+function toggleDetail(id){
+  const el = document.getElementById(id);
+  el.style.display = el.style.display === 'block' ? 'none' : 'block';
+}
+
+function konfirmasiHapus(btn, id){
+  if(btn.dataset.confirm === '1'){
+    hapusEntriReal(id);
+  } else {
+    btn.dataset.confirm = '1';
+    btn.dataset.original = btn.textContent;
+    btn.textContent = 'Yakin Hapus?';
+    setTimeout(() => {
+      if(btn.dataset.confirm === '1'){
+        btn.dataset.confirm = '0';
+        btn.textContent = btn.dataset.original;
+      }
+    }, 3000);
+  }
+}
+
+function hapusEntriReal(id){
+  try{
+    const existing = localStorage.getItem('siswa-data');
+    let arr = existing ? JSON.parse(existing) : [];
+    arr = arr.filter(e => e.id !== id);
+    localStorage.setItem('siswa-data', JSON.stringify(arr));
+    muatRekap();
+  } catch(err){}
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str == null ? '' : str;
+  return d.innerHTML;
+}
+
+document.getElementById('tanggal').valueAsDate = new Date();
+</script>
+</body>
+</html>
